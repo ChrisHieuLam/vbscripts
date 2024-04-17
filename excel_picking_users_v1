@@ -1,0 +1,37 @@
+Sub MoveRandomRow()
+    Dim rng As Range
+    Dim lastRowA As Long
+    Dim lastRowB As Long
+    Dim randomRow As Long
+
+    ' Determine the last row in column A
+    lastRowA = Cells(Rows.Count, "A").End(xlUp).Row
+
+    ' Generate a random row number
+    randomRow = Int((lastRowA - 1 + 1) * Rnd + 1)
+
+    ' Set the range to the random row in column A
+    Set rng = Range("A" & randomRow)
+
+    ' Determine the last row in column E
+    lastRowE = Cells(Rows.Count, "E").End(xlUp).Row + 1
+
+    ' Move the random row from column A to column E
+    rng.Cut Destination:=Cells(lastRowE, "E")
+    
+    ' Count the number of rows with data in the column E
+    ' intRowCount = Range("E1").End(-4162).Row
+    
+    ' Write the row count to cell C1
+    Range("C1").Value = WorksheetFunction.CountA(Range("E:E")) - 1
+
+
+
+    ' Loop backwards from the last row to the first row
+    For i = lastRowA To 1 Step -1
+        ' If the cell is empty then delete it
+        If Application.CountA(Cells(i, "A")) = 0 Then
+            Cells(i, "A").Delete shift:=xlShiftUp
+        End If
+    Next i
+End Sub
